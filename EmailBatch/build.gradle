@@ -1,0 +1,52 @@
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+  mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+dependencies {
+	compile 'org.springframework:spring-support:2.0.8'
+  compile 'org.springframework:spring-aop:4.1.2.RELEASE'
+  compile 'org.springframework:spring-beans:4.1.2.RELEASE'
+  compile 'org.springframework:spring-context:4.1.2.RELEASE'
+  compile 'org.springframework:spring-core:4.1.2.RELEASE'
+  compile 'org.springframework:spring-jdbc:4.1.2.RELEASE'
+  compile 'org.apache.commons:commons-dbcp2:2.0.1'
+  compile 'org.antlr:ST4:4.0.8'
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.4.3'
+  compile 'com.fasterxml.jackson.core:jackson-core:2.4.3'
+  compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.3'
+  compile 'org.springframework.security:spring-security-core:3.2.5.RELEASE'
+  compile 'org.springframework.security:spring-security-web:3.2.5.RELEASE'
+  compile 'org.springframework.security:spring-security-config:3.2.5.RELEASE'
+  compile 'org.json:json:20160810'
+  compile 'commons-io:commons-io:2.4'
+compile group: 'org.postgresql', name: 'postgresql', version: '9.4-1200-jdbc41'
+  compile 'org.jsoup:jsoup:1.10.1'
+	compile group: 'javax.mail', name: 'mail', version: '1.4'
+  
+}
+
+jar {
+  archiveName = 'jobs.jar'
+  destinationDir = projectDir
+  manifest {
+    attributes (
+        'Main-Class': 'com.cc.jobs.Batch',
+        'Class-Path': configurations.compile.collect { 'libraries/' + it.getName() }.join(' ')
+    )
+  }
+}
+
+task copyLibs(type: Copy){
+  into "libraries"
+  from configurations.runtime
+}
+build.dependsOn copyLibs
